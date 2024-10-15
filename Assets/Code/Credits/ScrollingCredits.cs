@@ -17,7 +17,6 @@ public class ScrollingCredits : MonoBehaviour
     private bool finalTextShown = false;
     private bool finalTextPositioned = false;
     private bool isFading = false;
-    private float finalTextTimer = 0f;
     private float fadeTimer = 0f;
 
     void Start()
@@ -56,7 +55,6 @@ public class ScrollingCredits : MonoBehaviour
             if (AllCreditsOffScreen())
             {
                 finalTextShown = true;
-                finalTextTimer = 0f;
             }
         }
         else
