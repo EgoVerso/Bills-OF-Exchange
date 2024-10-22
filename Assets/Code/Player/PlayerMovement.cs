@@ -7,10 +7,15 @@ public class PlayerMovement : MonoBehaviour
 
     private float originalMoveSpeed; // Para almacenar la velocidad original
 
+    Vector3 moveHorizontal; // A/D y flechas izquierda/derecha
+    Vector3 moveVertical; // W/S y flechas arriba/abajo
+    private Rigidbody rb;
+
     void Start()
     {
         // Guardar la velocidad original al inicio
         originalMoveSpeed = moveSpeed;
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -26,13 +31,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Obtener la entrada horizontal y vertical
-        float moveHorizontal = Input.GetAxis("Horizontal"); // A/D y flechas izquierda/derecha
-        float moveVertical = Input.GetAxis("Vertical"); // W/S y flechas arriba/abajo
+        moveHorizontal = Input.GetAxis("Horizontal") * transform.right; // A/D y flechas izquierda/derecha
+        moveVertical = Input.GetAxis("Vertical") * transform.forward; // W/S y flechas arriba/abajo
+    }
 
+    void FixedUpdate()
+    {
         // Crear un vector de movimiento
-        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * moveSpeed * Time.deltaTime;
+        Vector3 movement = new Vector3(moveHorizontal.x + moveVertical.x, 0f, moveHorizontal.z + moveVertical.z).normalized * moveSpeed * Time.fixedDeltaTime;
+        print(movement);
 
-        // Aplicar movimiento al objeto
-        transform.Translate(movement);
+        rb.MovePosition(transform.position + movement);
     }
 }
